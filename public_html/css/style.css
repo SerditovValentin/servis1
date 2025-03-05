@@ -1,0 +1,167 @@
+.container {
+    max-width: 1024px;
+}
+
+.required:after {
+    content: '*'; color: red; margin-left: 3px;
+}
+
+body {
+    padding-top: 70px;
+}
+
+table.text-center th, table.text-center td {
+    padding: 4px;
+    font-size: 16px;
+}
+
+.status-column {
+    width: 40px; /* Измените значение в зависимости от ваших предпочтений */
+    word-wrap: break-word; /* Позволяет переносить слова на новую строку */
+    word-break: break-word; /* Переносит слово на новую строку, если оно не помещается */
+    text-align: center; /* Центрируем текст в столбце */
+}
+
+.table-column {
+    width: 10px; /* Измените значение в зависимости от ваших предпочтений */
+    word-wrap: break-word; /* Позволяет переносить слова на новую строку */
+    word-break: break-word; /* Переносит слово на новую строку, если оно не помещается */
+    text-align: center; /* Центрируем текст в столбце */
+}
+
+.no-padding {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+}
+.summary-item {
+    flex: 1;
+    min-width: 200px;
+}
+
+.hero-section {
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    position: relative;
+}
+
+.hero-overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-content {
+    text-align: center;
+    color: white;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.hero-content p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.hero-content .btn {
+    font-size: 1.1rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+}
+
+.hero-content .btn-light {
+    color: black;
+    background-color: white;
+    border: none;
+}
+
+.hero-content .btn-light:hover {
+    color: white;
+    background-color: #444;
+}
+
+/* Footer */
+.footer {
+    background-color: #000;
+    color: #fff59a; /* Золотой цвет */
+    padding: 20px 0;
+    text-align: center;
+}
+
+.footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    /* padding: 0 15px; */
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* .footer-info {
+    margin-bottom: 10px;
+} */
+
+.footer-info h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #fff59a;
+}
+
+.footer-info p {
+    font-size: 1rem;
+    /* margin: 5px 0; */
+}
+
+.footer-info a {
+    color: #fff59a;
+    text-decoration: none;
+}
+
+.footer-info a:hover {
+    text-decoration: underline;
+}
+
+.footer-year p {
+    font-size: 0.875rem;
+    color: #fff59a;
+    /* margin-top: 10px; */
+}
+
+/* Адаптация под мобильные устройства */
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+h1 {
+    margin-top: .5rem;
+}
+
+/* Стили для галереи */
+.img-fixed-size {
+    height: 300px; /* Фиксированная высота для всех изображений в карточках */
+    object-fit: cover; /* Обрезка изображения для заполнения контейнера */
+}
+
+.modal-body img.modal-image {
+    width: 100%; /* Изображение заполняет ширину модального окна */
+    height: 100%; /* Изображение заполняет высоту модального окна */
+    object-fit: contain; /* Сохранение пропорций изображения, чтобы избежать обрезки */
+}

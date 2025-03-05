@@ -190,7 +190,6 @@ return [
         'phone' => 'номер телефона',
         'password' => 'пароль',
         'password_confirmation' => 'повторного ввода пароля',
-        'table_number' => 'номер столика',
         'adres' => 'адрес',
         'comment' => 'комментарий',
     ],

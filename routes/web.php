@@ -64,23 +64,7 @@ Route::middleware(['auth', 'role:Менеджер по закупкам'])->grou
     // Route::put('stkeeper/{table}/{id}/writeOff', [StkeeperController::class, 'writeOff'])->name('stkeeper.writeOff');
 });
 
-Route::middleware(['auth', 'role:Курьер'])->group(function () {
-    Route::get('courier', [CourierController::class, 'index'])->name('courier');
-    Route::post('/courier/start-delivery/{order}', [CourierController::class, 'startDelivery'])->name('courier.startDelivery');
-    Route::post('/courier/deliver/{order}', [CourierController::class, 'deliver'])->name('courier.deliver');
-});
 
-Route::middleware(['auth', 'role:Повар'])->group(function () {
-    Route::get('chef', [ChefController::class, 'index'])->name('chef.index');
-    Route::post('/chef/start-cooking/{orderItemId}', [ChefController::class, 'startCooking'])->name('chef.startCooking');
-    Route::post('/chef/finish-cooking/{orderItemId}', [ChefController::class, 'finishCooking'])->name('chef.finishCooking');
-});
-
-Route::middleware(['auth', 'role:Официант'])->group(function () {
-    Route::get('waiter', [WaiterController::class, 'index'])->name('waiter.index');
-    Route::get('orders', [WaiterController::class, 'orders'])->name('waiter.orders');
-    Route::post('/waiter/mark-as-served/{orderItemId}', [WaiterController::class, 'markAsServed'])->name('waiter.markAsServed');
-});
 
 Route::middleware(['auth', 'role:Директор'])->group(function () {
     Route::get('director', [DirectorController::class, 'index'])->name('director');

@@ -22,8 +22,8 @@ class StKeeperController extends Controller
     {
         $suppliers = Supplier::all();
         $orders = Order::all();
-        $parts = Warehouse::all();
-        
+        $parts = Warehouse::select('id', 'name', 'price', 'id_supplier')->get();
+
         return view('stkeeper.zakaz', compact('suppliers', 'orders', 'parts'));
     }
 
@@ -31,19 +31,22 @@ class StKeeperController extends Controller
     {
         $request->validate([
             'id_supplier' => 'required|exists:supplier,id',
-            'id_part' => 'required|exists:warehouse,id',
-            'quantity' => 'required|integer|min:1',
+            'id_part' => 'required|array|min:1',
+            'id_part.*' => 'exists:warehouse,id',
+            'quantity' => 'required|array|min:1',
+            'quantity.*' => 'integer|min:1',
             'delivery_date' => 'required|date|after_or_equal:today',
         ]);
 
-        // Получаем цену запчасти
-        $part = Warehouse::findOrFail($request->id_part);
-        $total_amount = $part->price * $request->quantity;
+        $total_amount = 0;
 
-        // Получаем id статуса "В процессе"
+        foreach ($request->id_part as $index => $partId) {
+            $part = Warehouse::findOrFail($partId);
+            $total_amount += $part->price * $request->quantity[$index];
+        }
+
         $status_id = Status::where('status', 'В процессе')->value('id');
 
-        // Создаем заказ
         $order = Order::create([
             'id_supplier' => $request->id_supplier,
             'total_amount' => $total_amount,
@@ -52,13 +55,84 @@ class StKeeperController extends Controller
             'id_status' => $status_id,
         ]);
 
-        // Добавляем запись в ordered_parts
-        OrderedParts::create([
-            'id_order' => $order->id,
-            'id_warehouse' => $request->id_part,
-        ]);
+        foreach ($request->id_part as $index => $partId) {
+            OrderedParts::create([
+                'id_order' => $order->id,
+                'id_warehouse' => $partId,
+                'quantity' => $request->quantity[$index],
+            ]);
+        }
 
         return redirect()->route('stkeeper.zakaz')->with('success', 'Заказ успешно создан.');
     }
-}
 
+    public function ordersList()
+    {
+        $orders = Order::with('supplier', 'status')->get();
+        return view('stkeeper.orders_list', compact('orders'));
+    }
+
+    public function cancelOrder(Order $order)
+    {
+        $status_id = Status::where('status', 'Отменен')->value('id');
+        if ($status_id) {
+            $order->update(['id_status' => $status_id]);
+        }
+
+        return redirect()->route('stkeeper.orders')->with('success', 'Заказ отменён.');
+    }
+
+    public function orderDetails($id)
+    {
+        $orderDetails = OrderedParts::where('id_order', $id)
+            ->join('warehouse', 'ordered_parts.id_warehouse', '=', 'warehouse.id')
+            ->select('warehouse.name as part_name', 'ordered_parts.quantity')
+            ->get();
+        return response()->json($orderDetails);
+    }
+
+    public function markDelivered($id)
+    {
+        $order = Order::findOrFail($id);
+
+        // Получаем id статуса "Доставлен"
+        $statusDelivered = Status::where('status', 'Доставлен')->value('id');
+
+        if ($order->status_id !== $statusDelivered) {
+            // Получаем запчасти из заказа
+            $orderedParts = OrderedParts::where('id_order', $id)->get();
+
+            foreach ($orderedParts as $part) {
+                // Обновляем количество на складе
+                $warehousePart = Warehouse::find($part->id_warehouse);
+
+                if ($warehousePart) {
+                    $warehousePart->stock_quantity += $part->quantity;
+                    $warehousePart->save();
+                }
+            }
+
+            // Обновляем статус заказа
+            $order->id_status = $statusDelivered;
+            $order->save();
+        }
+
+        return redirect()->back()->with('success', 'Заказ успешно доставлен и запасы обновлены.');
+    }
+
+    public function warehouse()
+    {
+        // Получаем все товары на складе
+        $warehouses = Warehouse::all();
+
+        // Группируем товары по имени и суммируем количество
+        $warehousesGrouped = $warehouses->groupBy('name')->map(function ($group) {
+            return [
+                'name' => $group->first()->name,  // Название товара
+                'stock_quantity' => $group->sum('stock_quantity'),  // Сумма всех количеств
+            ];
+        });
+
+        return view('stkeeper.warehouse', compact('warehousesGrouped'));
+    }
+}

@@ -29,6 +29,8 @@ class LoginController extends Controller
                 return redirect()->route('employee');
             } elseif ($postTitle === 'Менеджер по закупкам') {
                 return redirect()->route('stkeeper');
+            } elseif ($postTitle === 'Мастер-приемщик') {
+                 return redirect()->route('master_receiver');
             }  else {
                 return redirect()->route('position'); // Можно использовать любой маршрут по умолчанию
             }

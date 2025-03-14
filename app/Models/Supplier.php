@@ -19,4 +19,9 @@ class Supplier extends Model
         return $this->hasMany(Order::class, 'id_supplier');
     }
 
+    public function warehouse()
+    {
+        return $this->hasMany(Warehouse::class, 'id_supplier');
+    }
+
 }

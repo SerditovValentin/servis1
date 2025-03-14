@@ -12,7 +12,7 @@ class RepairRequest extends Model
     protected $table = 'repair_requests';
     public $timestamps = false;
 
-    protected $fillable = ['id_client', 'id_appliance', 'issue_description', 'preferred_visit_time', 'id_status'];
+    protected $fillable = ['id_client', 'id_appliance', 'issue_description', 'address', 'preferred_visit_time', 'id_status'];
 
     public function client()
     {

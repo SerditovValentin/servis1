@@ -4,17 +4,12 @@ use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\RegisterEmployeeController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\StkeeperController;
-use App\Http\Controllers\CourierController;
-use App\Http\Controllers\ChefController;
-use App\Http\Controllers\WaiterController;
 use App\Http\Controllers\DirectorController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\CartwaiterConrtoller;
 use App\Http\Controllers\ContactsController;
-use App\Http\Controllers\GalaryController;
 use App\Http\Controllers\About_restauranController;
-use App\Http\Controllers\PositionController;
+use App\Http\Controllers\Master_receiverController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home.index')->name('home');
@@ -48,20 +43,26 @@ Route::middleware(['auth', 'role:Админ'])->group(function () {
 });
 
 
-
 Route::middleware(['auth', 'role:Менеджер по закупкам'])->group(function () {
     Route::get('stkeeper', [StkeeperController::class, 'index'])->name('stkeeper');
     Route::get('/stkeeper/zakaz', [StKeeperController::class, 'zakaz'])->name('stkeeper.zakaz');
     Route::post('/stkeeper/zakaz', [StKeeperController::class, 'store'])->name('stkeeper.store');
+    Route::get('stkeeper/orders', [StKeeperController::class, 'ordersList'])->name('stkeeper.orders');
+    Route::put('stkeeper/orders/{order}/cancel', [StKeeperController::class, 'cancelOrder'])->name('stkeeper.cancel_order');
+    Route::get('/stkeeper/order-details/{id}', [StKeeperController::class, 'orderDetails'])->name('stkeeper.order_details');
+    Route::put('stkeeper/orders/{order}/delivered', [StKeeperController::class, 'markDelivered'])->name('stkeeper.mark_delivered');
 
-    // Route::get('stkeeper/{table}', [StkeeperController::class, 'show'])->name('stkeeper.show');
-    // Route::get('stkeeper/{table}/{id}/edit', [StkeeperController::class, 'edit'])->name('stkeeper.edit');
-    // Route::put('stkeeper/{table}/{id}', [StkeeperController::class, 'update'])->name('stkeeper.update');
-    // Route::delete('stkeeper/{table}/{id}', [StkeeperController::class, 'destroy'])->name('stkeeper.destroy');
-    // Route::get('stkeeper/{table}/create', [StkeeperController::class, 'create'])->name('stkeeper.create');
-    // Route::post('stkeeper/{table}', [StkeeperController::class, 'store'])->name('stkeeper.store');
-    // Route::get('stkeeper.expired', [StkeeperController::class, 'expired'])->name('stkeeper.expired');
-    // Route::put('stkeeper/{table}/{id}/writeOff', [StkeeperController::class, 'writeOff'])->name('stkeeper.writeOff');
+    Route::get('stkeeper/warehouse', [StKeeperController::class, 'warehouse'])->name('stkeeper.warehouse');
+
+    Route::get('/download-invoice/{id}', [StKeeperController::class, 'downloadInvoice'])->name('download.invoice');
+
+});
+
+Route::middleware(['auth', 'role:Мастер-приемщик'])->group(function () {
+    Route::get('master_receiver', [Master_receiverController::class, 'index'])->name('master_receiver');
+    Route::get('master_receiver/zakaz', [Master_receiverController::class, 'zakaz'])->name('master_receiver.zakaz');
+    Route::post('master_receiver/order', [Master_receiverController::class, 'order'])->name('master_receiver.order');
+  
 });
 
 

@@ -12,7 +12,7 @@ class OrderedParts extends Model
     protected $table = 'ordered_parts';
     public $timestamps = false; 
 
-    protected $fillable = ['id_order', 'id_warehouse'];
+    protected $fillable = ['id_order', 'id_warehouse', 'quantity'];
 
     public function order()
     {

@@ -18,12 +18,15 @@
 
     <div class="d-flex flex-column justify-content-between min-vh-100">
 
-        @include('stkeeper.header')
+        @include('master_receiver.header')
 
 
         <main class="flex-grow-1 py-3">
             <div class="container-xxl">
-                
+            <li class="nav-item">
+                    <a class="nav-link {{Route::is('master_receiver.zakaz') ? 'active' : ''}}" aria-current="page"
+                        href="{{ route('master_receiver.zakaz') }}">Склад</a>
+                </li>
             </div>
         </main>
 

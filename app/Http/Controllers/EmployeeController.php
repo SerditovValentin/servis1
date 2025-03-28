@@ -135,8 +135,8 @@ class EmployeeController extends Controller
             'id' => ['integer', 'unique:' . $table . ',id,' . $id],
             'id_repair_requests' => ['nullable', 'integer'],
             'id_movement_type' => ['required', 'integer'],
-            'amount' => ['required', 'decimal:10,2'],
-            'transaction_date' => ['required', 'date'],
+            'amount' => ['required', 'decimal:2'],
+            'transaction_date' => ['required', 'datetime'],
         ];
     }
     elseif ($table === 'appliance') {
@@ -146,7 +146,6 @@ class EmployeeController extends Controller
             'brand' => ['nullable', 'alpha', 'max:50'],
             'model' => ['nullable', 'alpha', 'max:50'],
             'id_type_equipment' => ['integer'],
-            'warranty' => ['boolean'],
         ];
     }
     elseif ($table === 'client') {
@@ -157,7 +156,6 @@ class EmployeeController extends Controller
             'patronymic' => ['nullable', 'alpha', 'max:50'],
             'phone' => ['required', 'integer', 'digits:11'],
             'email' => ['email'],
-            'address' => ['nullable',],
         ];
     } 
     elseif ($table === 'diagnostics') {
@@ -166,7 +164,7 @@ class EmployeeController extends Controller
             'id_repair_requests'=> ['integer',],
             'id_employee'=> ['required', 'integer'],
             'diagnosis'=> ['string', 'max:65535'],
-            'estimated_cost'=> ['required', 'decimal:10,2'],
+            'estimated_cost'=> ['required', 'decimal:2'],
             'confirmation_status'=> ['required', 'boolean'],
         ];
     }
@@ -191,17 +189,25 @@ class EmployeeController extends Controller
     elseif ($table === 'order') {
         $rules = [
             'id' => ['integer', 'unique:' . $table . ',id,' . $id],
-            'id_supplier'=> ['required', 'integer'],
-            'total_amount'=> ['required', 'decimal:10,2'],
-            'order_date'=> ['required', 'date'],
-            'id_status'=> ['required', 'integer'],
+            'id_supplier' => ['required', 'integer'],
+            'total_amount' => ['required', 'decimal:2'],
+            'order_datetime' => ['required', 'datetime'],
+            'delivery_date' => ['required', 'date'],
+            'id_status' => ['required', 'integer'],
+        ];
+    }
+    elseif ($table === 'ordered_parts') {
+        $rules = [
+            'id' => ['integer', 'unique:' . $table . ',id,' . $id],
+            'id_order' => ['required', 'integer'],
+            'id_warehouse' => ['required', 'integer'],
         ];
     }
     elseif ($table === 'payment') {
         $rules = [
             'id' => ['integer', 'unique:' . $table . ',id,' . $id],
             'id_repair_requests'=> ['required', 'integer'],
-            'amount'=> ['required', 'decimal:10,2'],
+            'amount'=> ['required', 'decimal:2'],
             'id_payment_method'=> ['required', 'integer'],
             'payment_date_time'=> ['required', 'date'],
         ];
@@ -223,7 +229,7 @@ class EmployeeController extends Controller
             'id' => ['integer', 'unique:' . $table . ',id,' . $id],
             'id_repair_requests'=> ['required', 'integer'],
             'repair_details'=> ['string', 'max:65535'],
-            'repair_date_time'=> ['required', 'date'],
+            'repair_date_time'=> ['required', 'datetime'],
             'id_status'=> ['required', 'integer'],
         ];
     }
@@ -233,7 +239,8 @@ class EmployeeController extends Controller
             'id_client' => ['integer', ''],
             'id_appliance' => ['required', ''],
             'issue_description' => ['string', 'max:65535'],
-            'preferred_visit_time' => ['required', 'datetime'],
+            'address' => ['nullable',],
+            'preferred_visit_time' => ['nullable', 'datetime'],
             'id_status' => ['required', 'integer'],
         ];
     }
@@ -264,8 +271,8 @@ class EmployeeController extends Controller
     elseif ($table === 'warehouse') {
         $rules = [
             'id' => ['integer', 'unique:' . $table . ',id,' . $id],
-            'name' => ['required','alpha','max:50'],
-            'price' => ['required', 'decimal:10,2'],
+            'name' => ['required','string','max:50'],
+            'price' => ['required', 'decimal:2'],
             'stock_quantity' => ['required','integer'],
         ];
     }
@@ -360,7 +367,7 @@ class EmployeeController extends Controller
         $rules = [
             'id_repair_requests' => ['nullable', 'integer'],
             'id_movement_type' => ['required', 'integer'],
-            'amount' => ['required', 'decimal:10,2'],
+            'amount' => ['required', 'decimal:2'],
             'transaction_date' => ['required', 'date'],
         ];
     }
@@ -380,7 +387,6 @@ class EmployeeController extends Controller
             'patronymic' => ['nullable', 'alpha', 'max:50'],
             'phone' => ['required', 'integer', 'digits:11'],
             'email' => ['email'],
-            'address' => ['nullable',],
         ];
     } 
     elseif ($table === 'diagnostics') {

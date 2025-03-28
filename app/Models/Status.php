@@ -28,4 +28,9 @@ class Status extends Model
     {
         return $this->hasMany(Order::class, 'id_status');
     }
+    
+    public function repairParts()
+    {
+        return $this->hasMany(RepairParts::class, 'id_status');
+    }
 }

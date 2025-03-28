@@ -18,12 +18,13 @@
 
     <div class="d-flex flex-column justify-content-between min-vh-100">
 
-        @include('stkeeper.header')
+        @include('master_receiver.header')
 
 
         <main class="flex-grow-1 py-3">
             <div class="container-xxl">
-                <p>Менеджер по закупкам</p>
+                
+                <p>Мастер-приемщик</p>
             </div>
         </main>
 

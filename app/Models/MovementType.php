@@ -14,7 +14,7 @@ class MovementType extends Model
 
     protected $fillable = ['type'];
 
-    public function employees()
+    public function warehouseMovement()
     {
         return $this->hasMany(WarehouseMovement::class, 'id_movement_type');
     }
@@ -23,4 +23,5 @@ class MovementType extends Model
     {
         return $this->hasMany(Accounting::class, 'id_movement_type');
     }
+
 }

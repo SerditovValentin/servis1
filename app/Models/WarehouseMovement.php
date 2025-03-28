@@ -19,7 +19,7 @@ class WarehouseMovement extends Model
         return $this->belongsTo(Warehouse::class, 'id_warehouse');
     }
 
-    public function movement_type()
+    public function movementType()
     {
         return $this->belongsTo(MovementType::class, 'id_movement_type');
     }

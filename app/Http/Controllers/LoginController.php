@@ -29,20 +29,24 @@ class LoginController extends Controller
                 return redirect()->route('employee');
             } elseif ($postTitle === 'Менеджер по закупкам') {
                 return redirect()->route('stkeeper');
-            }  else {
-                return redirect()->route('position'); // Можно использовать любой маршрут по умолчанию
+            } elseif ($postTitle === 'Мастер-приемщик') {
+                return redirect()->route('master_receiver');
+            } elseif ($postTitle === 'Сервисный инженер') {
+                return redirect()->route('master');
+            } else {
+                return redirect()->route('home'); // Маршрут по умолчанию
             }
         }
-        
+
         // Если пользователь гость, возвращаем форму входа
         return view('login.index');
     }
 
     public function store(Request $request)
-    {   
+    {
         $date = $request->validate([
-            'phone'=> ['required', 'integer', 'digits:11', 'exists:employee,phone_number'],
-            'password'=>['required'],
+            'phone' => ['required', 'integer', 'digits:11', 'exists:employee,phone_number'],
+            'password' => ['required'],
         ]);
         $credentials  = [
             'phone_number' => $date['phone'],
@@ -59,6 +63,8 @@ class LoginController extends Controller
             $roleRoutes = [
                 'Админ' => 'employee',
                 'Менеджер по закупкам' => 'stkeeper',
+                'Мастер-приемщик' => 'master_receiver',
+                'Сервисный инженер' => 'master',
             ];
 
             // Получаем должность

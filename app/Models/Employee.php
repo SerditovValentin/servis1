@@ -39,4 +39,8 @@ class Employee extends Authenticatable
     {
         return $this->belongsTo(Post::class, 'id_post');
     }
+    public function repair()
+    {
+        return $this->hasMany(Repair::class, 'id_employee');
+    }
 }

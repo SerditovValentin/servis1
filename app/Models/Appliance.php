@@ -23,4 +23,8 @@ class Appliance extends Model
     {
         return $this->belongsTo(TypeEquipment::class, 'id_type_equipment');
     }
+    public function repairRequests()
+    {
+        return $this->hasMany(RepairRequest::class, 'id_appliance');
+    }
 }
